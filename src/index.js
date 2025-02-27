@@ -5,7 +5,22 @@ dotenv.config({
 
 
 import connectDB from './db/dbConnection.js';
-connectDB();
+import app from './app.js';
+const PORT = process.env.PORT||8000;  //port le liya
+connectDB()
+.then(() => {
+    //ERROR PART - APP NOT ABLE TO CONNECT WITH DB
+    app.on("error", (err)=> {
+        console.log(`App not able to talk to database! ERROR: ${err}`);
+        throw err;
+    })
+    app.listen(PORT, ()=>{
+        console.log(`App is listening on PORT: ${PORT}`)
+    })
+})
+.catch((err)=>{
+    console.log("RUKOOOOOOOOOO.........MongoDB connection failed  !!!!!!", err);
+})
 
 
 /*
